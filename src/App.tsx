@@ -1,10 +1,24 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import './App.css';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const [things, setThings] = useState([]);
+
+  useEffect(() => {
+    const getThings = async () => {
+      const response = await fetch(
+        'https://whale-event-plan-app-9c9ut.ondigitalocean.app/api/things/',
+      );
+      const json = await response.json();
+      setThings(json);
+
+      console.log('things', json);
+    };
+    getThings();
+  }, []);
 
   return (
     <>
@@ -18,18 +32,20 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div className="read-the-docs">
+        {things.length > 0
+          ? things.map((thing, i) => {
+              return <p key={i}>{thing.name}</p>;
+            })
+          : 'No things'}
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
