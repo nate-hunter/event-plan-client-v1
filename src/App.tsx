@@ -3,9 +3,16 @@ import './App.css';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 
+type Thing = {
+  name: string;
+  description?: string;
+  created_at: string;
+  updated_at: string;
+};
+
 function App() {
   const [count, setCount] = useState(0);
-  const [things, setThings] = useState([]);
+  const [things, setThings] = useState<Thing[]>([]);
 
   useEffect(() => {
     const getThings = async () => {
